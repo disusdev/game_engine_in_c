@@ -1,7 +1,7 @@
 #ifndef __ENTRY_H__
 #define __ENTRY_H__
 
-#include "core/app.h"
+#include "core/engine.h"
 
 extern void
 app_create(t_app* out_app);
@@ -12,10 +12,8 @@ main()
   t_app app;
   app_create(&app);
   
-  app.init();
-  app.update(0.001666);
-  app.term();
-  return 0;
+  engine_create(&app);
+  return engine_run();
 }
 
 #endif
