@@ -13,7 +13,7 @@ set AR=ar
 
 set COMPILE_OPTIONS=-std=c99 -w -g -Wall -Wextra
 
-set SYSTEM_LIBS=
+set SYSTEM_LIBS=-luser32
 set ENGINE_INCLUDES=-I%SCRIPT_PATH%engine\src
 
 for /R "%SCRIPT_PATH%engine\src" %%f in (*.c) do (
