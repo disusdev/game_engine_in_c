@@ -4,9 +4,17 @@
 
 #include <stdio.h>
 
+#include "event.h"
+
 const f64 FIXED_TIME = 1.0 / 60.0;
 
 static t_engine engine;
+
+static void
+on_app_quit(t_event* e)
+{
+  engine.is_running = false;
+}
 
 void
 engine_create(t_app* app)
@@ -14,6 +22,9 @@ engine_create(t_app* app)
   engine.app = app;
   
   platform_init(app->name, 100, 100, 800, 600);
+  
+  event_init();
+  event_register(on_app_quit, APP_QUIT);
   
   engine.app->init();
 }

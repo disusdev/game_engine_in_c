@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 
+#include <core/event.h>
+
 typedef struct
 system_state
 {
@@ -195,7 +197,7 @@ LRESULT CALLBACK win32_process_msg(HWND window,
     
     case WM_CLOSE:
     {
-      // TODO: event app quit
+      event_dispatch(APP_QUIT);
       return false;
     } break;    
   }

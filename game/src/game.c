@@ -11,7 +11,7 @@ game_init()
 void
 game_update(double dt)
 {
-  printf("Game Update! dt:%f \n", dt);
+  // printf("Game Update! dt:%f \n", dt);
 }
 
 void
