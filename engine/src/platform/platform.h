@@ -41,4 +41,9 @@ platform_mem_set(void* dst,
 f64
 platform_get_absolute_time();
 
+void
+platform_console_write(const char* msg,
+                       u32 msg_length,
+                       u8 color_index);
+
 #endif

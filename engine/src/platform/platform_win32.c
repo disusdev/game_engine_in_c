@@ -175,6 +175,30 @@ platform_get_absolute_time()
   return (f64)time.QuadPart * clock_frequency;
 }
 
+const u8 colors[] =
+{
+  FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED,
+  FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED,
+  FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY,
+  FOREGROUND_RED | FOREGROUND_INTENSITY
+};
+
+void
+platform_console_write(const char* msg,
+                       u32 msg_length,
+                       u8 color_index)
+{
+  HANDLE console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+  SetConsoleTextAttribute(console_handle, colors[color_index]);
+  OutputDebugStringA(msg);
+  LPDWORD number_written = 0;
+  WriteConsoleA(console_handle,
+                msg,
+                (DWORD)msg_length,
+                number_written, 0);
+  SetConsoleTextAttribute(console_handle, colors[0]);
+}
+
 LRESULT CALLBACK win32_process_msg(HWND window,
                                    u32 msg,
                                    WPARAM w_param,

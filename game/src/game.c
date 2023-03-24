@@ -1,23 +1,24 @@
 #include <entry.h>
 
-#include <stdio.h>
+#include <core/logger.h>
 
 void
 game_init()
 {
-  printf("Game Init!\n");
+  LOG_EMPTY("uint: $u, int: $i, float: $f, str: $s", 12, 12, to_u64(12.12f), "hello");
+  LOG_DEBUG("uint: $u, int: $i, float: $f, str: $s", 256, -5, to_u64(256.34f), "hello");
+  LOG_WARN("uint: $u, int: $i, float: $f, str: $s", 256, -5, to_u64(256.34f), "hello");
+  LOG_ERROR("uint: $u, int: $i, float: $f, str: $s", 256, -5, to_u64(256.34f), "hello");
 }
 
 void
 game_update(double dt)
 {
-  // printf("Game Update! dt:%f \n", dt);
 }
 
 void
 game_term()
 {
-  printf("Game Term!\n");
 }
 
 void

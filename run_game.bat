@@ -1,3 +1,3 @@
 @echo off
 
-./.bin/game.exe
+start .bin/game.exe

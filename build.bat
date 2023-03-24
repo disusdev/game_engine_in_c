@@ -11,7 +11,7 @@ if not exist .obj mkdir .obj
 set CC=clang
 set AR=ar
 
-set COMPILE_OPTIONS=-std=c99 -w -g -Wall -Wextra
+set COMPILE_OPTIONS=-std=c99 -w -g -O0 -Wall -Wextra -DASSERTS_ENABLE
 
 set SYSTEM_LIBS=-luser32
 set ENGINE_INCLUDES=-I%SCRIPT_PATH%engine\src

@@ -2,8 +2,6 @@
 
 #include "platform/platform.h"
 
-#include <stdio.h>
-
 #include "event.h"
 
 const f64 FIXED_TIME = 1.0 / 60.0;
@@ -20,6 +18,8 @@ void
 engine_create(t_app* app)
 {
   engine.app = app;
+  
+  mem_init();
   
   platform_init(app->name, 100, 100, 800, 600);
   
