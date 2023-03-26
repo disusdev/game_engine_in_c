@@ -223,7 +223,73 @@ LRESULT CALLBACK win32_process_msg(HWND window,
     {
       event_dispatch(APP_QUIT);
       return false;
-    } break;    
+    } break;
+    
+    case WM_SIZE:
+    {
+      t_event e;
+      e.ctx.i32[0] = LOWORD(l_param);
+      e.ctx.i32[1] = HIWORD(l_param);
+      
+      event_dispatch_ext(&e, APP_RESIZE);
+    } break;
+    
+    case WM_KEYDOWN:
+    {
+      t_event e;
+      e.ctx.u32[0] = (u32)w_param;
+      event_dispatch_ext(&e, INPUT_KEY_DOWN);
+    } break;
+    
+    case WM_KEYUP:
+    {
+      t_event e;
+      e.ctx.u32[0] = (u32)w_param;
+      event_dispatch_ext(&e, INPUT_KEY_UP);
+    } break;
+    
+    case WM_CHAR:
+    {
+      t_event e;
+      e.ctx.u8[0] = (u8)w_param;
+      event_dispatch_ext(&e, INPUT_CHAR);
+    } break;
+    
+    case WM_LBUTTONDOWN:
+    {
+      t_event e;
+      e.ctx.u32[0] = 0;
+      event_dispatch_ext(&e, INPUT_BUTTON_DOWN);
+    } break;
+    
+    case WM_LBUTTONUP:
+    {
+      t_event e;
+      e.ctx.u32[0] = 0;
+      event_dispatch_ext(&e, INPUT_BUTTON_UP);
+    } break;
+    
+    case WM_RBUTTONDOWN:
+    {
+      t_event e;
+      e.ctx.u32[0] = 1;
+      event_dispatch_ext(&e, INPUT_BUTTON_DOWN);
+    } break;
+    
+    case WM_RBUTTONUP:
+    {
+      t_event e;
+      e.ctx.u32[0] = 1;
+      event_dispatch_ext(&e, INPUT_BUTTON_UP);
+    } break;
+    
+    case WM_MOUSEMOVE:
+    {
+      t_event e;
+      e.ctx.i32[0] = LOWORD(l_param);
+      e.ctx.i32[1] = HIWORD(l_param);
+      event_dispatch_ext(&e, INPUT_MOUSE_MOVE);
+    } break;
   }
   
   return DefWindowProcA(window, msg, w_param, l_param);

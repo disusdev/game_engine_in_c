@@ -1,6 +1,8 @@
 #include "engine.h"
 
-#include "platform/platform.h"
+#include <platform/platform.h>
+
+#include "input.h"
 
 #include "event.h"
 
@@ -26,6 +28,8 @@ engine_create(t_app* app)
   event_init();
   event_register(on_app_quit, APP_QUIT);
   
+  input_init();
+  
   engine.app->init();
 }
 
@@ -42,7 +46,11 @@ engine_run()
   
   while(engine.is_running)
   {
+    input_pre_update();
+    
     platform_pump_msg();
+    
+    input_update();
     
     if (!engine.is_running) break;
     
