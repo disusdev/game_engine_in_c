@@ -21,8 +21,6 @@ engine_create(t_app* app)
 {
   engine.app = app;
   
-  mem_init();
-  
   platform_init(app->name, 100, 100, 800, 600);
   
   event_init();

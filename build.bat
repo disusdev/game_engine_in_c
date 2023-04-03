@@ -4,6 +4,10 @@ setlocal enabledelayedexpansion
 
 set SCRIPT_PATH=%~dp0
 
+if exist .bin rmdir /s /q .bin
+if exist .lib rmdir /s /q .lib
+if exist .obj rmdir /s /q .obj
+
 if not exist .bin mkdir .bin
 if not exist .lib mkdir .lib
 if not exist .obj mkdir .obj

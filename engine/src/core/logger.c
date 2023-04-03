@@ -172,6 +172,19 @@ f2s(u8* buffer,
   return (p_buffer - buffer);
 }
 
+u64
+str_length(const char* c_str)
+{
+  u64 length = 0;
+  u8* p_str = c_str;
+  while(*p_str != '\0')
+  {
+    length++;
+    p_str++;
+  }
+  return length;
+}
+
 u32
 compose_to_buffer(u8* buffer,
                   const char* format,

@@ -105,4 +105,15 @@ while (bits__--) putchar(a__ &(1ULL << bits__) ? '1' : '0');\
 putchar('\n');\
 } while (0)
 
+#if defined(__clang__) || defined(__gcc__)
+#define LIB_INLINE __attribute__((always_inline)) inline
+#define LIB_NOINLINE __attribute__((noinline))
+#elif defined(_MSC_VER)
+#define LIB_INLINE __forceinline
+#define LIB_NOINLINE __declspec(noinline)
+#else
+#define LIB_INLINE static inline
+#define LIB_NOINLINE
+#endif
+
 #endif
