@@ -23,6 +23,8 @@ engine_create(t_app* app)
   
   platform_init(app->name, 100, 100, 800, 600);
   
+  logger_init();
+  
   event_init();
   event_register(on_app_quit, APP_QUIT);
   
@@ -74,6 +76,7 @@ engine_run()
   
   engine.app->term();
   
+  logger_term();
   platform_term();
   
   return 0;

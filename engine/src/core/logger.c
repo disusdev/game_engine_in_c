@@ -2,6 +2,30 @@
 
 #include <platform/platform.h>
 
+#include <containers/cvec.h>
+#include <containers/cstr.h>
+
+#define DEFAULT_BUFFER_SIZE 1024
+
+typedef struct
+{
+  cvec(u8) buffer; 
+} logger_state;
+
+static logger_state state;
+
+void
+logger_init()
+{
+  state.buffer = cvec_ncreate(u8, DEFAULT_BUFFER_SIZE);
+}
+
+void
+logger_term()
+{
+  cvec_destroy(state.buffer);
+}
+
 static u32
 digit_count(u64 n)
 {
@@ -172,26 +196,20 @@ f2s(u8* buffer,
   return (p_buffer - buffer);
 }
 
-u64
-str_length(const char* c_str)
-{
-  u64 length = 0;
-  u8* p_str = c_str;
-  while(*p_str != '\0')
-  {
-    length++;
-    p_str++;
-  }
-  return length;
-}
-
 u32
-compose_to_buffer(u8* buffer,
-                  const char* format,
+compose_to_buffer(const char* format,
                   t_log_data arr_data[])
 {
+  u64 buffer_capacity = cvec_capacity(state.buffer);
+  u64 total_length = composition_length(format, arr_data);
+  
+  if (buffer_capacity < total_length)
+  {
+    cvec_resize(state.buffer, total_length);
+  }
+  
   u32 data_index = 0;
-  u8* p_buffer = buffer;
+  u8* p_buffer = state.buffer;
   const char* p_view = format;
   while(*p_view != '\0')
   {
@@ -222,7 +240,7 @@ compose_to_buffer(u8* buffer,
       else if (type == 's')
       {
         const char* ds = arr_data[data_index++].value.c;
-        u32 size = str_length(ds);
+        u32 size = cstr_length(ds);
         mem_copy(p_buffer, ds, size);
         p_buffer += size;
       }
@@ -238,11 +256,54 @@ compose_to_buffer(u8* buffer,
   
   *p_buffer = '\0';
   
-  return (p_buffer - buffer);
+  return (p_buffer - state.buffer);
 }
 
 u64
 to_u64(f64 value)
 {
   return *(u64*)&value;
+}
+
+u64
+composition_length(const char* format,
+                   t_log_data arr_data[])
+{
+  u64 total_length = 0;
+  u32 data_index = 0;
+  
+  const char* p_view = format;
+  while(*p_view != '\0')
+  {
+    if (*p_view == '$')
+    {
+      p_view++;
+      u8 type = *p_view;
+      
+      if (type == 'i' ||
+          type == 'u' ||
+          type == 'f')
+      {// TODO: calculate exact length
+        total_length += 23;
+        data_index++;
+      }
+      else if (type == 's')
+      {
+        const char* ds = arr_data[data_index++].value.c;
+        u32 size = cstr_length(ds);
+        total_length += size;
+      }
+    }
+    
+    p_view++;
+  }
+  
+  return total_length + 1;
+}
+
+void
+logger_log_buffer(u64 length,
+                  e_log_type type)
+{
+  platform_console_write(state.buffer, length, type);
 }

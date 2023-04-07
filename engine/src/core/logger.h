@@ -3,6 +3,8 @@
 
 #include <defines.h>
 
+#include <containers/cstr.h>
+
 typedef enum
 e_log_type
 {
@@ -26,33 +28,42 @@ t_log_data
 }
 t_log_data;
 
+void
+logger_init();
+
+void
+logger_term();
+
 u32
-compose_to_buffer(u8* buffer,
-                  const char* format,
+compose_to_buffer(const char* format,
                   t_log_data arr_data[]);
 
 u64
 to_u64(f64 value);
 
+u64
+composition_length(const char* format,
+                   t_log_data arr_data[]);
+
+void
+logger_log_buffer(u64 length,
+                  e_log_type type);
+
 #define LOG_DEBUG(format, ...) do {\
-u8 log_buffer[1024];\
 t_log_data darr[] = { __VA_ARGS__ };\
-u32 l = compose_to_buffer(log_buffer, "[DEBUG] " format "\n", darr);\
-platform_console_write(log_buffer, l, LOG_TYPE_DEBUG); } while (0)
+u32 l = compose_to_buffer("[DEBUG] " format "\n", darr);\
+logger_log_buffer(l, LOG_TYPE_DEBUG); } while (0)
 #define LOG_EMPTY(format, ...) do {\
-u8 log_buffer[1024];\
 t_log_data darr[] = { __VA_ARGS__ };\
-u32 l = compose_to_buffer(log_buffer, format "\n", darr);\
-platform_console_write(log_buffer, l, LOG_TYPE_EMPTY); } while (0)
+u32 l = compose_to_buffer(format "\n", darr);\
+logger_log_buffer(l, LOG_TYPE_EMPTY); } while (0)
 #define LOG_WARN(format, ...) do {\
-u8 log_buffer[1024];\
 t_log_data darr[] = { __VA_ARGS__ };\
-u32 l = compose_to_buffer(log_buffer, "[WARN]  " format "\n", darr);\
-platform_console_write(log_buffer, l, LOG_TYPE_WARN); } while (0)
+u32 l = compose_to_buffer("[WARN] " format "\n", darr);\
+logger_log_buffer(l, LOG_TYPE_WARN); } while (0)
 #define LOG_ERROR(format, ...) do {\
-u8 log_buffer[1024];\
 t_log_data darr[] = { __VA_ARGS__ };\
-u32 l = compose_to_buffer(log_buffer, "[ERROR] " format "\n", darr);\
-platform_console_write(log_buffer, l, LOG_TYPE_ERROR); } while (0)
+u32 l = compose_to_buffer("[ERROR] " format "\n", darr);\
+logger_log_buffer(l, LOG_TYPE_ERROR); } while (0)
 
 #endif

@@ -1,3 +1,5 @@
 @echo off
 
-start .bin/game.exe
+".bin/game.exe"
+
+pause
